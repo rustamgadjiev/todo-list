@@ -1,0 +1,24 @@
+.task{
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.task button{
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+.task svg{
+    fill: #4a89dc;
+}
+.task div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+}
+.task svg{
+    width: 20px;
+}
