@@ -1,5 +1,6 @@
 .tasks{
     color: rgba(0,0,0,.85);
+    padding-bottom: 20px;
 }
 .content{
     border: 1px solid #d9d9d9;
@@ -18,6 +19,7 @@
     border: 0;
     outline: none;
     cursor: pointer;
+    animation: deleteBtnApperance .3s ease-in;
 }
 .deleteBtn:hover{
     opacity: .9;
@@ -76,4 +78,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media (max-width: 768px) {
+    .title::before,
+    .title::after{
+        content: none;
+    }
+    .title{
+        display: block;
+        text-align: center;
+        font-size: 1.5em;
+    }
+}
+
+@keyframes deleteBtnApperance {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
 }

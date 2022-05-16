@@ -54,16 +54,16 @@ export const Tasks = () => {
     dispatch(setTodosInLocale());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (todos.length === selectedTodosId.length) {
-  //     setAllChecked(true);
-  //   } else if (
-  //     !!selectedTodosId.length &&
-  //     selectedTodosId.length < todos.length
-  //   ) {
-  //     setAllChecked(false);
-  //   }
-  // }, [selectedTodosId, setAllChecked, todos]);
+  useEffect(() => {
+    if (todos.length === selectedTodosId.length) {
+      setAllChecked(true);
+    } else if (
+      !!selectedTodosId.length &&
+      selectedTodosId.length < todos.length
+    ) {
+      setAllChecked(false);
+    }
+  }, [selectedTodosId, setAllChecked, todos]);
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
