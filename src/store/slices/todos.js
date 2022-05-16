@@ -62,13 +62,6 @@ export const deleteManyTodo = createAsyncThunk(
 const todosSlice = createSlice({
   name: "todos",
   initialState,
-  reducers: {
-    setTodosInLocale(state, action) {
-      if (!localStorage.getItem("todos")) {
-        localStorage.setItem("todos", JSON.stringify(state.todos));
-      }
-    },
-  },
   extraReducers(builder) {
     builder.addCase(fetchTodos.fulfilled, (state, action) => {
       state.todos = action.payload;
@@ -98,9 +91,7 @@ const todosSlice = createSlice({
 
     builder.addCase(deleteManyTodo.fulfilled, (state, action) => {
       for (const id of action.payload) {
-        state.todos = state.todos.filter(
-          (todo) => todo.id !== id
-        );
+        state.todos = state.todos.filter((todo) => todo.id !== id);
       }
     });
     builder.addCase(deleteManyTodo.rejected, (state, action) => {

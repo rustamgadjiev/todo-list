@@ -51,16 +51,12 @@ export const Tasks = () => {
 
   useEffect(() => {
     dispatch(fetchTodos());
-    dispatch(setTodosInLocale());
   }, [dispatch]);
 
   useEffect(() => {
-    if (todos.length === selectedTodosId.length) {
+    if (!!selectedTodosId.length && selectedTodosId.length === todos.length) {
       setAllChecked(true);
-    } else if (
-      !!selectedTodosId.length &&
-      selectedTodosId.length < todos.length
-    ) {
+    } else if (selectedTodosId.length === 0 && todos.length) {
       setAllChecked(false);
     }
   }, [selectedTodosId, setAllChecked, todos]);
@@ -98,7 +94,6 @@ export const Tasks = () => {
                   <Task
                     key={todo.id}
                     {...todo}
-                    todo={todo}
                     allChecked={allChecked}
                     selectedTodosId={selectedTodosId}
                     setSelectedTodosId={setSelectedTodosId}
