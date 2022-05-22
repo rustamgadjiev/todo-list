@@ -5,10 +5,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as AlertIcon } from "../../assets/img/icons/alert.svg";
 import {
-  deleteManyTodo,
+  multipleDeletionTodo,
   fetchTodos,
   selectTodos,
-  setTodosInLocale,
 } from "../../store/slices/todos";
 import { Task } from "./Task/Task";
 import s from "./Tasks.module.css";
@@ -25,7 +24,7 @@ export const Tasks = () => {
 
   const { confirm } = Modal;
 
-  const handleDeleteManyClick = () => {
+  const handleMultipleDeletion = () => {
     confirm({
       title: "Вы точно хотите удалить эти элементы?",
       icon: <ExclamationCircleOutlined />,
@@ -33,7 +32,7 @@ export const Tasks = () => {
       okType: "danger",
       cancelText: "Отмена",
       onOk() {
-        dispatch(deleteManyTodo(selectedTodosId)).finally(() => {
+        dispatch(multipleDeletionTodo(selectedTodosId)).finally(() => {
           setAllChecked(false);
           setSelectedTodosId([]);
         });
@@ -54,19 +53,19 @@ export const Tasks = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!!selectedTodosId.length && selectedTodosId.length === todos.length) {
+    if (selectedTodosId.length && selectedTodosId.length === todos.length) {
       setAllChecked(true);
     } else if (selectedTodosId.length === 0 && todos.length) {
       setAllChecked(false);
     }
   }, [selectedTodosId, setAllChecked, todos]);
 
-  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+  const antIconIndicator = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   if (isLoading) {
     return (
       <div className={s.loading}>
-        <Spin indicator={antIcon} />
+        <Spin indicator={antIconIndicator} />
       </div>
     );
   }
@@ -102,7 +101,7 @@ export const Tasks = () => {
               })}
             </div>
             {selectedTodosId.length > 0 && (
-              <button className={s.deleteBtn} onClick={handleDeleteManyClick}>
+              <button className={s.deleteBtn} onClick={handleMultipleDeletion}>
                 Удалить выделенные
               </button>
             )}

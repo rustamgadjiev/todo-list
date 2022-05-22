@@ -1,1 +1,1 @@
-export const TODO_LIST = 'https://6238ce080a54d2ceab7a54d2.mockapi.io/todos/';
+export const TODO_LIST_URL = 'https://6238ce080a54d2ceab7a54d2.mockapi.io/todos/';

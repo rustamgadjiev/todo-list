@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { TODO_LIST } from "../../utils/constants";
+import { TODO_LIST_URL } from "../../utils/constants";
 
 const initialState = {
   todos: [],
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
-  const response = await fetch(TODO_LIST);
+  const response = await fetch(TODO_LIST_URL);
 
   if (response.ok) {
     return await response.json();
@@ -21,7 +21,7 @@ export const createTodo = createAsyncThunk(
       title,
     };
 
-    const response = await fetch(TODO_LIST, {
+    const response = await fetch(TODO_LIST_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,19 +37,19 @@ export const createTodo = createAsyncThunk(
 export const deleteTodo = createAsyncThunk(
   "todos/deleteTodo",
   async (todoId) => {
-    const response = await fetch(TODO_LIST + todoId, { method: "DELETE" });
+    const response = await fetch(TODO_LIST_URL + todoId, { method: "DELETE" });
 
     if (response.ok) {
       return await response.json();
     } else return new Error("Ошибка при удалении задачи");
   }
 );
-export const deleteManyTodo = createAsyncThunk(
+export const multipleDeletionTodo = createAsyncThunk(
   "todos/deleteManyTodo",
   async (arrId) => {
     const indexTodos = [];
     for (const id of arrId) {
-      const response = await fetch(TODO_LIST + id, { method: "DELETE" });
+      const response = await fetch(TODO_LIST_URL + id, { method: "DELETE" });
       indexTodos.push(id);
 
       if (response.ok && arrId[arrId.length - 1] === id) {
@@ -84,18 +84,28 @@ const todosSlice = createSlice({
 
     builder.addCase(deleteTodo.fulfilled, (state, action) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
+      state.isLoading = false;
     });
     builder.addCase(deleteTodo.rejected, (state, action) => {
       state.error = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(deleteTodo.pending, (state, action) => {
+      state.isLoading = true;
     });
 
-    builder.addCase(deleteManyTodo.fulfilled, (state, action) => {
+    builder.addCase(multipleDeletionTodo.fulfilled, (state, action) => {
       for (const id of action.payload) {
         state.todos = state.todos.filter((todo) => todo.id !== id);
       }
+      state.isLoading = false;
     });
-    builder.addCase(deleteManyTodo.rejected, (state, action) => {
+    builder.addCase(multipleDeletionTodo.rejected, (state, action) => {
       state.error = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(multipleDeletionTodo.pending, (state, action) => {
+      state.isLoading = true;
     });
   },
 });
