@@ -84,7 +84,7 @@ export const Tasks = () => {
           </div>
         ) : (
           <>
-            <Checkbox onChange={handleAllCheckChange} checked={allChecked}>
+            <Checkbox onChange={handleAllCheckChange} checked={allChecked} indeterminate={(todos.length > selectedTodosId.length) && selectedTodosId.length > 0}>
               Выделить все
             </Checkbox>
             <div className={s.content}>
