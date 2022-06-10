@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import s from "./AddForm.module.css";
 import { createTodo } from "../../../store/slices/todos";
+import s from "./AddForm.module.css";
 
 export const AddForm = () => {
   const dispatch = useDispatch();
@@ -12,9 +12,8 @@ export const AddForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(createTodo(title)).finally(
-      () => setTitle('')
-    );
+    dispatch(createTodo(title));
+    setTitle('');
   };
 
   return (

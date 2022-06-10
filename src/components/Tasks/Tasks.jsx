@@ -6,17 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as AlertIcon } from "../../assets/img/icons/alert.svg";
 import {
   multipleDeletionTodo,
-  fetchTodos,
   selectTodos,
 } from "../../store/slices/todos";
 import { Task } from "./Task/Task";
 import s from "./Tasks.module.css";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 
 export const Tasks = () => {
   const dispatch = useDispatch();
-  const { todos, isLoading } = useSelector(selectTodos);
+  const todos = useSelector(selectTodos);
   const [allChecked, setAllChecked] = useState(false);
   const [selectedTodosId, setSelectedTodosId] = useState([]);
 
@@ -32,10 +29,9 @@ export const Tasks = () => {
       okType: "danger",
       cancelText: "Отмена",
       onOk() {
-        dispatch(multipleDeletionTodo(selectedTodosId)).finally(() => {
+        dispatch(multipleDeletionTodo(selectedTodosId));
           setAllChecked(false);
           setSelectedTodosId([]);
-        });
       },
     });
   };
@@ -49,26 +45,12 @@ export const Tasks = () => {
   }, [allChecked, todos]);
 
   useEffect(() => {
-    dispatch(fetchTodos());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (selectedTodosId.length && selectedTodosId.length === todos.length) {
       setAllChecked(true);
     } else if (selectedTodosId.length === 0 && todos.length) {
       setAllChecked(false);
     }
   }, [selectedTodosId, setAllChecked, todos]);
-
-  const antIconIndicator = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
-  if (isLoading) {
-    return (
-      <div className={s.loading}>
-        <Spin indicator={antIconIndicator} />
-      </div>
-    );
-  }
 
   return (
     <section className={s.tasks}>
@@ -84,7 +66,14 @@ export const Tasks = () => {
           </div>
         ) : (
           <>
-            <Checkbox onChange={handleAllCheckChange} checked={allChecked} indeterminate={(todos.length > selectedTodosId.length) && selectedTodosId.length > 0}>
+            <Checkbox
+              onChange={handleAllCheckChange}
+              checked={allChecked}
+              indeterminate={
+                todos.length > selectedTodosId.length &&
+                selectedTodosId.length > 0
+              }
+            >
               Выделить все
             </Checkbox>
             <div className={s.content}>
